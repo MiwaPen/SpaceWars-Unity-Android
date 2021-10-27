@@ -9,21 +9,25 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MenuController menuController;
     [SerializeField] private EnemySpawner enemySpawner;
     [SerializeField] private ReposBase reposBase;
+    private SoundController soundController;
     private Vector3 startPos;
 
     private void Start()
-    { 
+    {
         Application.targetFrameRate = FrameLimit;
+        soundController = FindObjectOfType<SoundController>();
         startPos = player.gameObject.transform.position;
         menuController.MenuBTNSBindings(this.gameObject.GetComponent<GameManager>());
         menuController.SetScorelabelValue(GetMaxScore());
         ShowMenu();
+        soundController.bgMusicPlay();
     }
     private void Awake()
     {
         player.onHPChange += UpdateHealthBar;
         player.onXpChange += UpdateXPInfo;
-        player.onLose += ShowMenu;
+        player.onLose += Lose;
+        player.onGetDamage += GetDamage;
     }
 
     public void StartGame()
@@ -45,9 +49,13 @@ public class GameManager : MonoBehaviour
         menuController.SetScorelabelValue(GetMaxScore());
     }
 
+    private void Lose()
+    {
+        soundController.LoseSoundPlay();
+        ShowMenu();
+    }
     private void ResetScene()
     {
-        
         EnemyController[] enemies = FindObjectsOfType<EnemyController>();
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -67,6 +75,11 @@ public class GameManager : MonoBehaviour
         gameplayUI.UpdateHealthBar(newHp);
     }
 
+    private void GetDamage()
+    {
+        soundController.DamageSoundPlay();
+        UpdateHealthBar();
+    }
     private void UpdateXPInfo()
     {
         int newTotalXp = player.GetTotalXp();

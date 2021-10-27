@@ -12,6 +12,7 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private ReposBase reposBase;
     private PlayerGunsController gunsController;
     public Action onHPChange;
+    public Action onGetDamage;
     public Action onXpChange;
     public Action onLose;
 
@@ -46,7 +47,7 @@ public class PlayerStats : MonoBehaviour
         {
             Lose();
         }
-        onHPChange?.Invoke();
+        onGetDamage?.Invoke();
     }
 
     private void Lose()

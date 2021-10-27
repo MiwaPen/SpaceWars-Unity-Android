@@ -7,9 +7,12 @@ public class BulletCreator : MonoBehaviour
     [SerializeField] private float spawnRate = 1f;
     [SerializeField] private bool canShoot = false;
     [SerializeField] private string rotation = null;
+    [SerializeField] private string whoShooting = "";
+    private SoundController soundController;
 
     void Start()
     {
+        soundController = FindObjectOfType<SoundController>();
         InvokeRepeating("CreateBullet", spawnDuration, spawnRate);
     }
 
@@ -17,6 +20,18 @@ public class BulletCreator : MonoBehaviour
     {
         if (canShoot==true)
         {
+            switch (whoShooting)
+            {
+                case "Player":
+                    soundController.PlayerShootPlay();
+                    break;
+                case "Enemy":
+                    soundController.EnemyShootPlay();
+                    break;
+                default:
+                    break;
+            }
+            
             GameObject newBullet = Instantiate(Bullet.gameObject, this.transform.position, this.transform.rotation);
             newBullet.GetComponent<BulletController>().SetRotation(rotation);
         }

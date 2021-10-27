@@ -10,13 +10,14 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private List<BulletCreator> Guns;
     private new Rigidbody rigidbody;
     private PlayerStats player;
+    private SoundController soundController;
     private bool canDie = false;
     private TagsHolder tagsHolder = new TagsHolder();
 
     private void Start()
     {
         player = FindObjectOfType<PlayerStats>();
-
+        soundController = FindObjectOfType<SoundController>();
         rigidbody = this.GetComponent<Rigidbody>();
     }
 
@@ -35,6 +36,7 @@ public class EnemyController : MonoBehaviour
         {
             if (canDie == true)
             {
+                soundController.DamageSoundPlay();
                 int DMG = other.gameObject.GetComponent<BulletController>().GetBulletDMG();
                 UpdateHP(DMG);
                 Destroy(other.gameObject);
@@ -59,6 +61,7 @@ public class EnemyController : MonoBehaviour
             enemyHP -= DMG;
             if (enemyHP <= 0)
             {
+                soundController.explosionPlay();
                 player.UpdateXP(enemyXP);
                 EnemyDestroy();
             }

@@ -29,12 +29,12 @@ public class BulletController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        string otherTag = other.gameObject.tag;
         Destroy(this.gameObject);
+       /* string otherTag = other.gameObject.tag;
         if (otherTag == tagsHolder.tags[6] || otherTag == tagsHolder.tags[5] || otherTag == tagsHolder.tags[3] || otherTag == tagsHolder.tags[7])
         {
             Destroy(this.gameObject);
-        }
+        }*/
     }
 
     public void  SetRotation(string rot)

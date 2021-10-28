@@ -78,7 +78,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         rigidbody.transform.position = rigidbody.transform.position + new Vector3(0, -speed*Time.deltaTime, 0);
     }

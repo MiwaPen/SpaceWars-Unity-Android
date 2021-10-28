@@ -28,27 +28,28 @@ public class PlayerMovementController : MonoBehaviour
             canMove = true;
         }
         else { canMove = false; }
-    }
-
-    private void FixedUpdate()
-    {
         if (canMove)
-        {   
+        {
             bodyPos = rigidbody.transform.position;
-            if (Math.Round( mousePos.x,1) != Math.Round(bodyPos.x,1))
+            if (Math.Round(mousePos.x, 1) != Math.Round(bodyPos.x, 1))
             {
-              
-                if (mousePos.x > bodyPos.x && Math.Round(bodyPos.x, 1) < Math.Round(RightBorder.position.x, 1) )
+
+                if (mousePos.x > bodyPos.x && Math.Round(bodyPos.x, 1) < Math.Round(RightBorder.position.x, 1))
                 {
                     /*rigidbody.transform.position = bodyPos + new Vector3(Speed * Time.deltaTime, 0, 0);*/
                     rigidbody.MovePosition(bodyPos + new Vector3(Speed * Time.deltaTime, 0, 0));
                 }
                 if (mousePos.x < bodyPos.x && Math.Round(bodyPos.x, 1) > Math.Round(LeftBorder.position.x, 1))
                 {
-                   /* rigidbody.transform.position = bodyPos + new Vector3(-Speed * Time.deltaTime, 0, 0);*/
+                    /* rigidbody.transform.position = bodyPos + new Vector3(-Speed * Time.deltaTime, 0, 0);*/
                     rigidbody.MovePosition(bodyPos + new Vector3(-Speed * Time.deltaTime, 0, 0));
                 }
             }
         }
+    }
+
+    private void FixedUpdate()
+    {
+       
     }
 }

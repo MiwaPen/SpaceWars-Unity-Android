@@ -3,23 +3,22 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private List<Transform> spawnPointsList;
-    [SerializeField] private List<EnemyController> enemyList;
-    [SerializeField] private float spawnDuration = 0f;
-    [SerializeField] private float spawnRate = 0f;
-    private bool canSpawn = false;
+    [SerializeField] private List<Transform> _spawnPointsList;
+    [SerializeField] private List<EnemyController> _enemyList;
+    [SerializeField] private float _spawnDuration = 0f;
+    [SerializeField] private float _spawnRate = 0f;
+    private bool _canSpawn = false;
     private void Start()
     {
-        InvokeRepeating("SpawnEnemy",spawnDuration,spawnRate); 
+        InvokeRepeating("SpawnEnemy",_spawnDuration, _spawnRate); 
     }
-
     private void SpawnEnemy()
     {
-        if (canSpawn==true)
+        if (_canSpawn == true)
         {
-            int spawnPointIndex = GetRandomIndex(spawnPointsList.Count);
-            int enemyIndex = GetRandomIndex(enemyList.Count);
-            EnemyController enemy = Instantiate(enemyList[enemyIndex], spawnPointsList[spawnPointIndex].position, spawnPointsList[spawnPointIndex].rotation);
+            int spawnPointIndex = GetRandomIndex(_spawnPointsList.Count);
+            int enemyIndex = GetRandomIndex(_enemyList.Count);
+            EnemyController enemy = Instantiate(_enemyList[enemyIndex], _spawnPointsList[spawnPointIndex].position, _spawnPointsList[spawnPointIndex].rotation);
         }
     }
 
@@ -32,11 +31,11 @@ public class EnemySpawner : MonoBehaviour
 
     public void StartEnemySpawn()
     {
-        canSpawn = true;
+        _canSpawn = true;
     }
 
     public void StopEnemySpawn()
     {
-        canSpawn = false;
+        _canSpawn = false;
     }
 }

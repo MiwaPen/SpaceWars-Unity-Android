@@ -2,58 +2,68 @@ using UnityEngine;
 
 public class SoundController : MonoBehaviour
 {
-    [SerializeField] private AudioSource ClickSound;
-    [SerializeField] private AudioSource ShootSoundPlayer;
-    [SerializeField] private AudioSource ShootSoundEnemy;
-    [SerializeField] private AudioSource LoseSound;
-    [SerializeField] private AudioSource Explosion;
-    [SerializeField] private AudioSource BgMusic;
-    [SerializeField] private AudioSource DamageSound;
+    [SerializeField] private AudioSource _clickSound;
+    [SerializeField] private AudioSource _shootSoundPlayer;
+    [SerializeField] private AudioSource _shootSoundEnemy;
+    [SerializeField] private AudioSource _loseSound;
+    [SerializeField] private AudioSource _explosion;
+    [SerializeField] private AudioSource _bgMusic;
+    [SerializeField] private AudioSource _damageSound;
+    private PlayerStats _player;
+    private GameManager _gameManager;
 
+    private void Awake()
+    {
+        _gameManager = FindObjectOfType<GameManager>();
+        _player = FindObjectOfType<PlayerStats>();
+        _gameManager.OnGameStart += bgMusicPlay;
+        _player.OnGetDamage += DamageSoundPlay;
+        _player.OnLose += LoseSoundPlay;
+    }
 
     public void ClickPlay()
     {
-        ClickSound.Play();
+        _clickSound.Play();
     }
-    public void bgMusicPlay()
+    private void bgMusicPlay()
     {
-        BgMusic.Play();
+        _bgMusic.Play();
     }
     public void explosionPlay()
     {
-        if (Explosion.isPlaying)
+        if (_explosion.isPlaying)
         {
-            Explosion.Stop();
+            _explosion.Stop();
         }
-        Explosion.Play();
+        _explosion.Play();
     }
-    public void LoseSoundPlay()
+    private void LoseSoundPlay()
     {
-        LoseSound.Play();
+        _loseSound.Play();
     }
     public void PlayerShootPlay()
     {
-        if (ShootSoundPlayer.isPlaying)
+        if (_shootSoundPlayer.isPlaying)
         {
-            ShootSoundPlayer.Stop();
+            _shootSoundPlayer.Stop();
         }
-        ShootSoundPlayer.Play();
+        _shootSoundPlayer.Play();
     }
     public void EnemyShootPlay()
     {
-        if (ShootSoundEnemy.isPlaying)
+        if (_shootSoundEnemy.isPlaying)
         {
-            ShootSoundEnemy.Stop();
+            _shootSoundEnemy.Stop();
         }
-        ShootSoundEnemy.Play();
+        _shootSoundEnemy.Play();
     }
 
     public void DamageSoundPlay()
     {
-        if (DamageSound.isPlaying)
+        if (_damageSound.isPlaying)
         {
-            DamageSound.Stop();
+            _damageSound.Stop();
         }
-        DamageSound.Play();
+        _damageSound.Play();
     }
 }

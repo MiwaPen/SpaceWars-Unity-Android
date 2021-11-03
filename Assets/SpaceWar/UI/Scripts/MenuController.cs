@@ -4,27 +4,26 @@ using TMPro;
 
 public class MenuController : MonoBehaviour
 {
-    [SerializeField] private Button startBTN;
-    [SerializeField] private Button exitBTN;
-    [SerializeField] private TMP_Text scoreLabel;
-    private SoundController soundController;
+    [SerializeField] private Button _startButton;
+    [SerializeField] private Button _exitButton;
+    [SerializeField] private TMP_Text _scoreLabel;
+    private SoundController _soundController;
+    private GameManager _gameManager;
+    private ReposBase _reposBase;
 
     private void Awake()
     {
-        soundController = FindObjectOfType<SoundController>();
+        _reposBase = FindObjectOfType<ReposBase>();
+        _soundController = FindObjectOfType<SoundController>();
+        _gameManager = FindObjectOfType<GameManager>();
+        _startButton.onClick.AddListener(_gameManager.StartGame);
+        _startButton.onClick.AddListener(_soundController.ClickPlay);
+        _exitButton.onClick.AddListener(_gameManager.GameExit);
+        _exitButton.onClick.AddListener(_soundController.ClickPlay);
     }
-
-    public void MenuBTNSBindings(GameManager gameManager)
+    public void SetScorelabelValue()
     {
-        startBTN.onClick.AddListener(gameManager.StartGame);
-        startBTN.onClick.AddListener(soundController.ClickPlay);
-        exitBTN.onClick.AddListener(gameManager.GameExit);
-        exitBTN.onClick.AddListener(soundController.ClickPlay);
-
-    }
-    public void SetScorelabelValue(int score)
-    {
-        scoreLabel.text = score.ToString();
+        _scoreLabel.text = _reposBase.PlayerScoreRepos.maxScore.ToString();
     }
 
 }

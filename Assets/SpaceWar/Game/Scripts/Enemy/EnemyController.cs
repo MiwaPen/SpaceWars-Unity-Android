@@ -3,66 +3,65 @@ using System.Collections.Generic;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private int enemyHP;
-    [SerializeField] private int enemyXP;
-    [SerializeField] private float speed = 1f;
-    [SerializeField] private float destroyDelay = 1f;
-    [SerializeField] private List<BulletCreator> Guns;
-    private new Rigidbody rigidbody;
-    private PlayerStats player;
-    private SoundController soundController;
-    private bool canDie = false;
-    private TagsHolder tagsHolder = new TagsHolder();
+    [SerializeField] private int _enemyHp;
+    [SerializeField] private int _enemyXp;
+    [SerializeField] private float _speed = 1f;
+    [SerializeField] private float _destroyDelay = 1f;
+    [SerializeField] private List<BulletCreator> _guns;
+    private  Rigidbody _rigidbody;
+    private PlayerStats _player;
+    private SoundController _soundController;
+    private bool _canDie = false;
 
     private void Start()
     {
-        player = FindObjectOfType<PlayerStats>();
-        soundController = FindObjectOfType<SoundController>();
-        rigidbody = this.GetComponent<Rigidbody>();
+        _player = FindObjectOfType<PlayerStats>();
+        _soundController = FindObjectOfType<SoundController>();
+        _rigidbody = this.GetComponent<Rigidbody>();
     }
 
     private void Awake()
     {
-        for (int i = 0; i < Guns.Count; i++)
+        for (int i = 0; i < _guns.Count; i++)
         {
-            Guns[i].SetRotation(tagsHolder.tags[1]);
-            Guns[i].StopShooting();
+            _guns[i].SetRotation(BulletRotation.Down);
+            _guns[i].StopShooting();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == tagsHolder.tags[7])
+        if(other.gameObject.tag == TagsHolder.PlayerBullet)
         {
-            if (canDie == true)
+            if (_canDie == true)
             {
-                soundController.DamageSoundPlay();
+                _soundController.DamageSoundPlay();
                 int DMG = other.gameObject.GetComponent<BulletController>().GetBulletDMG();
                 UpdateHP(DMG);
                 Destroy(other.gameObject);
             }
         }
 
-        if(other.gameObject.tag == tagsHolder.tags[4])
+        if(other.gameObject.tag == TagsHolder.EnemyUnlockTrigget)
         {
             MakeEnemyAlive();
         }
 
-        if (other.gameObject.tag == tagsHolder.tags[5])
+        if (other.gameObject.tag == TagsHolder.BottomBorder)
         {
-            Invoke("EnemyDestroy",destroyDelay);
+            Invoke("EnemyDestroy", _destroyDelay);
         }
     }
 
-    private void UpdateHP(int DMG)
+    private void UpdateHP(int damage)
     {
-        if (enemyHP > 0)
+        if (_enemyHp > 0)
         {
-            enemyHP -= DMG;
-            if (enemyHP <= 0)
+            _enemyHp -= damage;
+            if (_enemyHp <= 0)
             {
-                soundController.explosionPlay();
-                player.UpdateXP(enemyXP);
+                _soundController.explosionPlay();
+                _player.UpdateXP(_enemyXp);
                 EnemyDestroy();
             }
         }
@@ -70,17 +69,17 @@ public class EnemyController : MonoBehaviour
 
     private void MakeEnemyAlive()
     {
-        canDie = true;
+        _canDie = true;
 
-        for (int i = 0; i < Guns.Count; i++)
+        for (int i = 0; i < _guns.Count; i++)
         {
-            Guns[i].StartShooting();
+            _guns[i].StartShooting();
         }
     }
 
     private void Update()
     {
-        rigidbody.transform.position = rigidbody.transform.position + new Vector3(0, -speed*Time.deltaTime, 0);
+        _rigidbody.transform.position = _rigidbody.transform.position + new Vector3(0, -_speed * Time.deltaTime, 0);
     }
 
     private void EnemyDestroy()
@@ -90,6 +89,6 @@ public class EnemyController : MonoBehaviour
 
     public int GetEnemyHP()
     {
-        return enemyHP;
+        return _enemyHp;
     }
 }

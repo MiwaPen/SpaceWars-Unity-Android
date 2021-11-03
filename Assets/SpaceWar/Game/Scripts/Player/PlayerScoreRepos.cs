@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class PlayerScoreRepos 
 {
-    public int _maxScore { get; set; }
+    public int maxScore { get; set; }
     const string maxScoreKey = "maxScoreKey";
 
     public void Initialize()
     {
-        _maxScore = PlayerPrefs.GetInt(maxScoreKey);
+        maxScore = PlayerPrefs.GetInt(maxScoreKey);
     }
 
     public void SaveScore(int newScore)
     {
-        if (newScore > _maxScore)
+        if (newScore > maxScore)
         {
-            PlayerPrefs.SetInt(maxScoreKey,newScore);
+            PlayerPrefs.SetInt(maxScoreKey, newScore);
             UpdateScoreInfo();
         }
     }
@@ -26,6 +26,6 @@ public class PlayerScoreRepos
 
     private void UpdateScoreInfo()
     {
-        _maxScore = PlayerPrefs.GetInt(maxScoreKey);
+        maxScore = PlayerPrefs.GetInt(maxScoreKey);
     }
 }

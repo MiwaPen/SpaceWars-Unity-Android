@@ -3,53 +3,45 @@ using UnityEngine;
 
 public class PlayerMovementController : MonoBehaviour
 {
-    [SerializeField] private float Speed = 1f;
-    [SerializeField] private Transform LeftBorder;
-    [SerializeField] private Transform RightBorder;
-    private Camera mainCamera;
-    private new Rigidbody rigidbody;
-    private Vector3 mousePos;
-    private Vector3 bodyPos;
-    private bool canMove = false;
+    [SerializeField] private float _speed = 1f;
+    [SerializeField] private Transform _leftBorder;
+    [SerializeField] private Transform _rightBorder;
+    private Camera _mainCamera;
+    private  Rigidbody _rigidbody;
+    private Vector3 _mousePos;
+    private Vector3 _bodyPos;
+    private bool _canMove = false;
     
     void Awake()
     {
-        mainCamera = Camera.main;
-        rigidbody = this.gameObject.GetComponent<Rigidbody>();
+        _mainCamera = Camera.main;
+        _rigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
     void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            mousePos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            mousePos.z = 0f;
-            mousePos.y = rigidbody.transform.position.y;
-            canMove = true;
+            _mousePos = _mainCamera.ScreenToWorldPoint(Input.mousePosition);
+            _mousePos.z = 0f;
+            _mousePos.y = _rigidbody.transform.position.y;
+            _canMove = true;
         }
-        else { canMove = false; }
-        if (canMove)
+        else { _canMove = false; }
+        if (_canMove)
         {
-            bodyPos = rigidbody.transform.position;
-            if (Math.Round(mousePos.x, 1) != Math.Round(bodyPos.x, 1))
+            _bodyPos = _rigidbody.transform.position;
+            if (Math.Round(_mousePos.x, 1) != Math.Round(_bodyPos.x, 1))
             {
-
-                if (mousePos.x > bodyPos.x && Math.Round(bodyPos.x, 1) < Math.Round(RightBorder.position.x, 1))
+                if (_mousePos.x > _bodyPos.x && Math.Round(_bodyPos.x, 1) < Math.Round(_rightBorder.position.x, 1))
                 {
-                    /*rigidbody.transform.position = bodyPos + new Vector3(Speed * Time.deltaTime, 0, 0);*/
-                    rigidbody.MovePosition(bodyPos + new Vector3(Speed * Time.deltaTime, 0, 0));
+                    _rigidbody.MovePosition(_bodyPos + new Vector3(_speed * Time.deltaTime, 0, 0));
                 }
-                if (mousePos.x < bodyPos.x && Math.Round(bodyPos.x, 1) > Math.Round(LeftBorder.position.x, 1))
+                if (_mousePos.x < _bodyPos.x && Math.Round(_bodyPos.x, 1) > Math.Round(_leftBorder.position.x, 1))
                 {
-                    /* rigidbody.transform.position = bodyPos + new Vector3(-Speed * Time.deltaTime, 0, 0);*/
-                    rigidbody.MovePosition(bodyPos + new Vector3(-Speed * Time.deltaTime, 0, 0));
+                    _rigidbody.MovePosition(_bodyPos + new Vector3(-_speed * Time.deltaTime, 0, 0));
                 }
             }
         }
-    }
-
-    private void FixedUpdate()
-    {
-       
     }
 }

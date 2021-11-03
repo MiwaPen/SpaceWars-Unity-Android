@@ -2,24 +2,23 @@ using UnityEngine;
 
 public class PlayerDamageController : MonoBehaviour
 {
-    private PlayerStats stats;
-    private TagsHolder tagsHolder = new TagsHolder();
+    private PlayerStats _stats;
     private void Awake()
     {
-        stats = this.gameObject.GetComponent<PlayerStats>();
+        _stats = this.gameObject.GetComponent<PlayerStats>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == tagsHolder.tags[3])
+        if (other.gameObject.tag == TagsHolder.EnemyBullet)
         {
-            int DMG = other.gameObject.GetComponent<BulletController>().GetBulletDMG();
-            stats.UpdateHP(DMG);
+            int _damage = other.gameObject.GetComponent<BulletController>().GetBulletDMG();
+            _stats.UpdateHP(_damage);
         }
-        if (other.gameObject.tag == tagsHolder.tags[8])
+        if (other.gameObject.tag == TagsHolder.Enemy)
         {
-            int DMG = other.gameObject.GetComponent<EnemyController>().GetEnemyHP();
-            stats.UpdateHP(DMG);
+            int _damage = other.gameObject.GetComponent<EnemyController>().GetEnemyHP();
+            _stats.UpdateHP(_damage);
             Destroy(other.gameObject);
         }
     }

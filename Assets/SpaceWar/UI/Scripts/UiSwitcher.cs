@@ -2,22 +2,26 @@ using UnityEngine;
 
 public class UiSwitcher : MonoBehaviour
 {
-    [SerializeField] private GameObject GameplayUI;
-    [SerializeField] private GameObject MenuUI;
+    [SerializeField] private GameplayUIController _gameplayUi;
+    [SerializeField] private MenuController _menuUi;
+    [SerializeField] private PlayerStats player;
     private void Start()
     {
-        GameplayUI.SetActive(false);
-        MenuUI.SetActive(false);
+        _gameplayUi.gameObject.SetActive(false);
+        _menuUi.gameObject.SetActive(false);
     }
 
     public void ShowMenuUI()
     {
-        GameplayUI.SetActive(false);
-        MenuUI.SetActive(true);
+        _gameplayUi.gameObject.SetActive(false);
+        _menuUi.gameObject.SetActive(true);
+        _menuUi.SetScorelabelValue();
+
     }
     public void ShowGameplayUI()
     {
-        GameplayUI.SetActive(true);
-        MenuUI.SetActive(false);
+        _gameplayUi.gameObject.SetActive(true);
+        _menuUi.gameObject.SetActive(false);
+        _gameplayUi.ResetToDefault(player.GetMaxHp(), player.GetMaxXp(), player.GetLvlXp());
     }
 }

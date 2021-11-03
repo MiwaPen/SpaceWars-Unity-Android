@@ -2,57 +2,57 @@ using UnityEngine;
 
 public class BulletCreator : MonoBehaviour
 {
-    [SerializeField] private BulletController Bullet;
-    [SerializeField] private float spawnDuration = 1f;
-    [SerializeField] private float spawnRate = 1f;
-    [SerializeField] private bool canShoot = false;
-    [SerializeField] private string rotation = null;
-    [SerializeField] private string whoShooting = "";
-    private SoundController soundController;
+    [SerializeField] private BulletController _Bullet;
+    [SerializeField] private float _spawnDuration = 1f;
+    [SerializeField] private float _spawnRate = 1f;
+    [SerializeField] private bool _canShoot = false;
+    [SerializeField] private CharEnum _whoShooting;
+    private BulletRotation _bulletRotation;
+    private SoundController _soundController;
 
     void Start()
     {
-        soundController = FindObjectOfType<SoundController>();
-        InvokeRepeating("CreateBullet", spawnDuration, spawnRate);
+        _soundController = FindObjectOfType<SoundController>();
+        InvokeRepeating("CreateBullet", _spawnDuration, _spawnRate);
     }
 
     private void CreateBullet()
     {
-        if (canShoot==true)
+        if (_canShoot == true)
         {
-            switch (whoShooting)
+            switch (_whoShooting)
             {
-                case "Player":
-                    soundController.PlayerShootPlay();
+                case CharEnum.Player:
+                    _soundController.PlayerShootPlay();
                     break;
-                case "Enemy":
-                    soundController.EnemyShootPlay();
+                case CharEnum.Enemy:
+                    _soundController.EnemyShootPlay();
                     break;
                 default:
                     break;
             }
             
-            GameObject newBullet = Instantiate(Bullet.gameObject, this.transform.position, this.transform.rotation);
-            newBullet.GetComponent<BulletController>().SetRotation(rotation);
+            GameObject newBullet = Instantiate(_Bullet.gameObject, this.transform.position, this.transform.rotation);
+            newBullet.GetComponent<BulletController>().SetRotation(_bulletRotation);
         }
     }           
     public void ChangeBulletType(BulletController newbullet)
     {
-        Bullet = newbullet;
+        _Bullet = newbullet;
     }
 
     public void StartShooting()
     {
-        canShoot = true;
+        _canShoot = true;
     }
 
     public void StopShooting()
     {
-        canShoot = false;
+        _canShoot = false;
     }
 
-    public void SetRotation(string rot)
+    public void SetRotation(BulletRotation bulletRotation)
     {
-        rotation = rot;
+        this._bulletRotation = bulletRotation;
     }
 }

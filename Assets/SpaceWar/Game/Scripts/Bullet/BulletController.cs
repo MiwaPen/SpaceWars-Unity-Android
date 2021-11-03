@@ -1,26 +1,25 @@
 using UnityEngine;
 public class BulletController : MonoBehaviour
 {
-    [SerializeField] private int DMG;
-    [SerializeField] private float speed;
-    [SerializeField] private string rotation = null;
-    private TagsHolder tagsHolder = new TagsHolder();
-    private new Rigidbody rigidbody;
+    [SerializeField] private int _damage;
+    [SerializeField] private float _speed;
+    private  Rigidbody _rigidbody;
+    private BulletRotation _bulletRotation;
 
     private void Start()
     {
-        rigidbody = this.gameObject.GetComponent<Rigidbody>();
+        _rigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
     {
-        switch (rotation)
+        switch (_bulletRotation)
         {
-            case "UP":
-                rigidbody.transform.Translate(new Vector3(0, speed * Time.deltaTime, 0));
+            case BulletRotation.Up:
+                _rigidbody.transform.Translate(new Vector3(0, _speed * Time.deltaTime, 0));
                 break;
-            case "DOWN":
-                rigidbody.transform.Translate(new Vector3(0, -speed * Time.deltaTime, 0));
+            case BulletRotation.Down:
+                _rigidbody.transform.Translate(new Vector3(0, -_speed * Time.deltaTime, 0));
                 break;
             default:
                 break;
@@ -32,13 +31,13 @@ public class BulletController : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void  SetRotation(string rot)
+    public void  SetRotation(BulletRotation bulletRotation)
     {
-        rotation = rot;
+        this._bulletRotation = bulletRotation;
     }
 
     public int GetBulletDMG()
     {
-        return DMG;
+        return _damage;
     }
 }

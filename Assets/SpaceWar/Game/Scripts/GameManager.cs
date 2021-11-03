@@ -1,101 +1,61 @@
 using UnityEngine;
+using System;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private int FrameLimit = 120;
-    [SerializeField] private PlayerStats player;
-    [SerializeField] private UiSwitcher uiSwitcher;
-    [SerializeField] private GameplayUIController gameplayUI;
-    [SerializeField] private MenuController menuController;
-    [SerializeField] private EnemySpawner enemySpawner;
-    [SerializeField] private ReposBase reposBase;
-    private SoundController soundController;
-    private Vector3 startPos;
+    public Action OnGameStart;
+    [SerializeField] private int _frameLimit = 120;
+    [SerializeField] private PlayerStats _player;
+    [SerializeField] private UiSwitcher _uiSwitcher;
+    [SerializeField] private EnemySpawner _enemySpawner;
+    private Vector3 _startPos;
 
     private void Start()
     {
-        Application.targetFrameRate = FrameLimit;
-        soundController = FindObjectOfType<SoundController>();
-        startPos = player.gameObject.transform.position;
-        menuController.MenuBTNSBindings(this.gameObject.GetComponent<GameManager>());
-        menuController.SetScorelabelValue(GetMaxScore());
+        Application.targetFrameRate = _frameLimit;
+        _startPos = _player.gameObject.transform.position;
         ShowMenu();
-        soundController.bgMusicPlay();
+        OnGameStart?.Invoke();
     }
     private void Awake()
     {
-        player.onHPChange += UpdateHealthBar;
-        player.onXpChange += UpdateXPInfo;
-        player.onLose += Lose;
-        player.onGetDamage += GetDamage;
+        _player.OnLose += ShowMenu;
     }
 
     public void StartGame()
     {
-        enemySpawner.StartEnemySpawn();
-        player.gameObject.SetActive(true);
-        player.transform.position = startPos;
-        player.StartGame();
-        uiSwitcher.ShowGameplayUI();
-        gameplayUI.ResetToDefault(player.GetMaxHp(), player.GetMaxXp(), player.GetLvlXp());
+        _enemySpawner.StartEnemySpawn();
+        _player.gameObject.SetActive(true);
+        _player.transform.position = _startPos;
+        _player.StartGame();
+        _uiSwitcher.ShowGameplayUI();
     }
 
     private void ShowMenu()
     {
         ResetScene();
-        enemySpawner.StopEnemySpawn();
-        player.gameObject.SetActive(false);
-        uiSwitcher.ShowMenuUI();
-        menuController.SetScorelabelValue(GetMaxScore());
+        _enemySpawner.StopEnemySpawn();
+        _player.gameObject.SetActive(false);
+        _uiSwitcher.ShowMenuUI();
     }
 
-    private void Lose()
-    {
-        soundController.LoseSoundPlay();
-        ShowMenu();
-    }
     private void ResetScene()
     {
-        EnemyController[] enemies = FindObjectsOfType<EnemyController>();
-        for (int i = 0; i < enemies.Length; i++)
+        EnemyController[] _enemies = FindObjectsOfType<EnemyController>();
+        for (int i = 0; i < _enemies.Length; i++)
         {
-            Destroy(enemies[i].gameObject);
+            Destroy(_enemies[i].gameObject);
         }
 
-        BulletController[] bullets = FindObjectsOfType<BulletController>();
-        for (int i = 0; i < bullets.Length ; i++)
+        BulletController[] _bullets = FindObjectsOfType<BulletController>();
+        for (int i = 0; i < _bullets.Length ; i++)
         {
-            Destroy(bullets[i].gameObject);
+            Destroy(_bullets[i].gameObject);
         }
-    }
-
-    private void UpdateHealthBar()
-    {
-        int newHp = player.GetHp();
-        gameplayUI.UpdateHealthBar(newHp);
-    }
-
-    private void GetDamage()
-    {
-        soundController.DamageSoundPlay();
-        UpdateHealthBar();
-    }
-    private void UpdateXPInfo()
-    {
-        int newTotalXp = player.GetTotalXp();
-        int newLvlXp = player.GetLvlXp();
-        gameplayUI.UpdateXPInfo(newTotalXp,newLvlXp);
     }
 
     public void GameExit()
     {
         Application.Quit();
-    }
-
-
-    private int  GetMaxScore()
-    {
-        int score = reposBase.PlayerScoreRepos._maxScore;
-        return score;
     }
 }

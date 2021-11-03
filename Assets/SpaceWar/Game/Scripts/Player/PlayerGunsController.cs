@@ -3,19 +3,18 @@ using UnityEngine;
 
 public class PlayerGunsController : MonoBehaviour
 {
-    [SerializeField] private List<BulletCreator> Guns;
-    private TagsHolder tagsHolder = new TagsHolder();
+    [SerializeField] private List<BulletCreator> _gun;
 
     private void Awake()
     {
-        foreach(BulletCreator gun in Guns)
+        foreach(BulletCreator gun in _gun)
         {
-            gun.SetRotation(tagsHolder.tags[2]);
+            gun.SetRotation(BulletRotation.Up);
         }
     }
     public void StartShooting()
     {
-        foreach (BulletCreator gun in Guns)
+        foreach (BulletCreator gun in _gun)
         {
             gun.StartShooting();
         }
@@ -23,31 +22,9 @@ public class PlayerGunsController : MonoBehaviour
 
     public void StopShooting()
     {
-        foreach (BulletCreator gun in Guns)
+        foreach (BulletCreator gun in _gun)
         {
             gun.StopShooting();
-        }
-    }
-
-    public void ChangeWeapons(int lvl)
-    {
-        switch (lvl)
-        {
-            case 1:
-                Debug.Log(lvl);
-                break;
-            case 2:
-                Debug.Log(lvl);
-                break;
-            case 3:
-                Debug.Log(lvl);
-                break;
-            case 4:
-                Debug.Log(lvl);
-                break;
-            default:
-                Debug.Log(lvl);
-                break;
         }
     }
 }

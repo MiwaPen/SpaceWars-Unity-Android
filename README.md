@@ -22,4 +22,4 @@
 ![Screenshot!](screenshot/screenshot.png)
 
 ---
-## Check Develop branch to see all project!
+## Check Develop branch to see full project!

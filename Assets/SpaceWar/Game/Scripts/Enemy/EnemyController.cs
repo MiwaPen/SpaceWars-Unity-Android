@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private int _enemyHp;
